@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visiting_card/Home.dart';
+import 'package:visiting_card/bloc/db_bloc.dart';
 import 'bloc/info_bloc.dart';
 import 'bloc/theme_bloc.dart';
 void main() async {
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(create: (context) => DbBloc()..add(initializeDb())),
         BlocProvider(create: (context) => InfoBloc()),
         BlocProvider(create: (context) => ThemeBloc()..add(LoadTheme())),
       ],

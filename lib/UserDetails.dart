@@ -11,13 +11,39 @@ class UserDetails extends StatefulWidget {
 }
 
 class _UserDetailsState extends State<UserDetails> {
-  final prefs =  SharedPreferences.getInstance();
+   late Future<SharedPreferences> prefs;
+
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _desiginationController = TextEditingController();
   TextEditingController _mailController = TextEditingController();
+  
+  late String selectedGender;
+  final List<String> genderOptions = ['Male', 'Female'];
+
+  @override
+  void initState() {
+    super.initState();
+    prefs = SharedPreferences.getInstance();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final sharedPrefs = await prefs;
+
+    setState(() {
+      _nameController.text = sharedPrefs.getString("name") ?? "";
+      _desiginationController.text = sharedPrefs.getString("profession") ?? "";
+      _phoneController.text = sharedPrefs.getString("phonenumber") ?? "";
+      _mailController.text = sharedPrefs.getString("email") ?? "";
+      selectedGender = sharedPrefs.getString("gender") ?? "";
+    });
+  }
   @override
   Widget build(BuildContext context) {
+    String? selectedGender;
+
+    final List<String> genderOptions = ['Male', 'Female'];
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading:false,
@@ -28,10 +54,7 @@ class _UserDetailsState extends State<UserDetails> {
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
-            //TODO: name text field
-            //TODO: desigination field
-            //TODO : PHONENUMBER
-            //TODO: EMAIL
+            
             TextField(
               controller: _nameController,
               onChanged: (value) async {
@@ -49,7 +72,7 @@ class _UserDetailsState extends State<UserDetails> {
 
               )
             ),
-            SizedBox(height:10),
+            SizedBox(height:20),
 
             TextField(
               controller: _desiginationController,
@@ -69,7 +92,7 @@ class _UserDetailsState extends State<UserDetails> {
               )
             ),
 
-            SizedBox(height:10),
+            SizedBox(height:20),
             TextField(
                 controller: _phoneController,
                 onChanged: (value) async {
@@ -90,7 +113,7 @@ class _UserDetailsState extends State<UserDetails> {
                                   
                 ),
               ),
-            SizedBox(height:10),
+            SizedBox(height:20),
 
             TextField(
                 controller: _mailController,
@@ -112,6 +135,38 @@ class _UserDetailsState extends State<UserDetails> {
                                   
                 ),
               ),
+              SizedBox(height:20),
+              DropdownButtonFormField<String>(
+                    
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
+                      labelText: "Gender",
+                    ),
+                    //hint: Text("Select your gender"),
+                    value: selectedGender,
+                    onChanged: (String? newValue)async {
+                      final sharedPrefs = await prefs;
+                      
+                      setState(() {
+                        selectedGender = newValue;
+                        
+                      });
+                       sharedPrefs.setString("gender",selectedGender.toString());
+                    },
+                    items: genderOptions.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Please select gender.';
+                      }
+                      return null;
+                    },
+                  ),
+        
             
 
 
@@ -122,8 +177,8 @@ class _UserDetailsState extends State<UserDetails> {
           ],
         ),
       ),
-      bottomSheet: Padding(
-        padding: const EdgeInsets.only(bottom:30.0),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(bottom:30.0,left:20,right:20),
         child: BottomNavBar(),
       ), 
     );

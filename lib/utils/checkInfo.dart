@@ -8,6 +8,7 @@ Future<bool> checkInfoForSharedPreferences() async {
   String? designation = infoDetails.getString("profession");
   String? phoneNumber = infoDetails.getString("phonenumber");
   String? email = infoDetails.getString("email");
+  String? gender = infoDetails.getString("gender");
     // print("printintg");
     //   //print every detail
     //   print(name);
@@ -16,7 +17,7 @@ Future<bool> checkInfoForSharedPreferences() async {
     //   print(designation);
 
   
-  if (name != null && designation != null && phoneNumber != null && email != null) {
+  if (name != null && designation != null && phoneNumber != null && email != null && gender!= null) {
     return true; 
   } else {
     return false;

@@ -81,8 +81,8 @@ class _HomeState extends State<Home> {
       ),
      
 
-      bottomSheet:Padding(
-        padding: const EdgeInsets.only(bottom:30.0),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(bottom:30.0,left:20,right:20),
         child: BottomNavBar(),
       ), 
     );

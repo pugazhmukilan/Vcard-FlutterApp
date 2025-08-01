@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:visiting_card/CardsPage.dart';
 import 'package:visiting_card/Home.dart';
+import 'package:visiting_card/Scan.dart';
 import 'package:visiting_card/UserDetails.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -38,7 +40,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  // Handle button press
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Scan()));
                 },
                 child: Text('Scan'),
               ),
@@ -47,6 +49,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => UserDetails()));
                 },
                 child: Text('User Details'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Cardspage()));
+                },
+                child: Text('Vcards'),
               ),
             ],
           ),
