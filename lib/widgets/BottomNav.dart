@@ -25,36 +25,52 @@ class _BottomNavBarState extends State<BottomNavBar> {
         child: Wrap(
             alignment: WrapAlignment.spaceEvenly,
             runAlignment: WrapAlignment.center,
+            crossAxisAlignment: WrapCrossAlignment.center,
             spacing: 8.0,
             
             children: [
-              ElevatedButton(
-                onPressed: () {
+              GestureDetector(
+                onTap: () {
                   Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(builder: (context) => Home()),
                                         (Route<dynamic> route) => false, // Remove everything before HomeScreen
                                       );
                 },
-                child: Text('  Home  '),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.blueGrey
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical:10),
+                    child: Text('  Home  '),
+                  )),
               ),
-              ElevatedButton(
-                onPressed: () {
+              GestureDetector(
+                onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => Scan()));
                 },
-                child: Text('Scan'),
+                child: Icon(Icons.qr_code_outlined, size: 30),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => UserDetails()));
-                },
-                child: Text('User Details'),
-              ),
-              ElevatedButton(
-                onPressed: () {
+              GestureDetector(
+                onTap: () {
+                  
                   Navigator.push(context, MaterialPageRoute(builder: (context) => Cardspage()));
                 },
-                child: Text('Vcards'),
+                child: Icon(Icons.bookmark, size: 30),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => UserDetails()));
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Icon(Icons.edit, size: 30),
+                )
               ),
             ],
           ),

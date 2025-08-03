@@ -35,5 +35,11 @@ class DbBloc extends Bloc<DbEvent, DbState> {
       emit(DBmodified(users: user));
     });
 
+    on<GetAllUsers>((event, emit) async {
+      DatabaseHelper db = DatabaseHelper.getInstance();
+      List<Map<String, dynamic>> users = await db.getUsers();
+      emit(DBmodified(users: users));
+    });
+
 }
 }

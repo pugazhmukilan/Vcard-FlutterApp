@@ -23,3 +23,7 @@ final class deleteUser extends DbEvent {
   final int id;
   deleteUser({required this.id});
 }
+
+final class GetAllUsers extends DbEvent {
+  
+}
