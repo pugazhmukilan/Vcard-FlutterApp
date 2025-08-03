@@ -2,7 +2,9 @@ part of 'db_bloc.dart';
 
 @immutable
 sealed class DbEvent {}
-final class initializeDb extends DbEvent {}
+final class initializeDb extends DbEvent {
+  
+}
 final class insertUser extends DbEvent {
   final String name;
   final String profession;

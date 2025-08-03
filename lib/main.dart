@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => DbBloc()..add(initializeDb())),
+        BlocProvider(create: (context) => DbBloc()),
         BlocProvider(create: (context) => InfoBloc()),
         BlocProvider(create: (context) => ThemeBloc()..add(LoadTheme())),
       ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:visiting_card/bloc/db_bloc.dart';
 import 'package:visiting_card/bloc/info_bloc.dart';
 import 'package:visiting_card/bloc/theme_bloc.dart';
 import 'package:visiting_card/utils/CreateDetails.dart';
@@ -39,7 +40,11 @@ class _HomeState extends State<Home> {
       ),
       body: BlocBuilder<InfoBloc, InfoState>(
         builder: (context, state) {
-          
+          if(state is DBmodified){
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Database modified successfully!"))
+            );
+          }
           if(state is detailsInSufficent){
             return Center(
               child:Text("Details insufficent for QR Code generation"),

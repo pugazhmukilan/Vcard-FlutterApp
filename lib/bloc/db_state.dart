@@ -4,4 +4,8 @@ part of 'db_bloc.dart';
 sealed class DbState {}
 
 final class DbInitial extends DbState {}
-final class DBmodified extends DbState{}
+final class DBmodified extends DbState{
+  final List<Map<String, dynamic>>users;
+
+  DBmodified({required this.users});
+}

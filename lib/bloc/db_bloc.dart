@@ -8,33 +8,31 @@ part 'db_event.dart';
 part 'db_state.dart';
 
 class DbBloc extends Bloc<DbEvent, DbState> {
-  late Database db;
+  
   DbBloc() : super(DbInitial()) {
-    on<initializeDb>((event, emit)async {
-      db = await initDatabase();
-      print("Database initialized");
-    });
+    
 
     on<insertUser>((event, emit) async {
-      await db.insert(
-        'users',
-        {
-          'name': event.name,
-          'profession': event.profession,
-          'phonenumber': event.phonenumber,
-          'email': event.email
-        });
-      emit(DBmodified());
+      DatabaseHelper  db = DatabaseHelper.getInstance();
+     
+      db.insertUser({
+        'name': event.name,
+        'profession': event.profession,
+        'phonenumber': event.phonenumber,
+        'email': event.email, 
+        'gender': event.gender});
+      
+        List<Map<String, dynamic>> user  = await db.getUsers();
+        emit(DBmodified(users: user));
+
   }
     );
 
     on<deleteUser>((event, emit) async {
-      await db.delete(
-        'users',
-        where: 'id = ?',
-        whereArgs: [event.id],
-      );
-      emit(DBmodified());
+      DatabaseHelper  db = DatabaseHelper.getInstance();
+      db.deleteUser(event.id);
+      List<Map<String, dynamic>> user  = await db.getUsers();
+      emit(DBmodified(users: user));
     });
 
 }
