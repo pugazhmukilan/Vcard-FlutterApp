@@ -19,24 +19,40 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    final colorscheme = Theme.of(context).colorScheme;
+  
+    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     //call the event bloc
     BlocProvider.of<InfoBloc>(context).add(CheckInfoPresentOrNot());
     return Scaffold(
       appBar: AppBar(
-        title: Text('VCARD'),
+        title: Text('VCARD',style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
         actions: [
           BlocBuilder<ThemeBloc, ThemeState>(
             builder: (context, themeState) {
               return Switch(
+                
                 value: themeState.isDarkMode,
                 onChanged: (value) {
                   // Toggle the theme
                   BlocProvider.of<ThemeBloc>(context).add(ToggleTheme());
                 },
+                materialTapTargetSize: MaterialTapTargetSize.padded, // Prevents size jumping
+                inactiveThumbColor: Colors.transparent,
+                activeColor: Colors.transparent,
+                thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
+                          (states) {
+                            if (states.contains(MaterialState.selected)) {
+                              return const Icon(Icons.dark_mode, size: 24, color: Colors.black);
+                            }
+                            return const Icon(Icons.light_mode, size: 24, color: Colors.black);
+                          },
+                        ),
               );
             },
           ),
         ],
+        actionsPadding: EdgeInsets.only(right: 8.0),
       ),
       body: BlocBuilder<InfoBloc, InfoState>(
         builder: (context, state) {
@@ -69,11 +85,15 @@ class _HomeState extends State<Home> {
 
                           final qrimage = QrImage(qrCode);
                           return Padding(
-                            padding: const EdgeInsets.all(50.0),
+                            padding:  EdgeInsets.all(50.0),
                             child: Center(
                               child:PrettyQrView(
                                     qrImage: qrimage,
-                                    decoration: const PrettyQrDecoration(),
+                                    decoration:  PrettyQrDecoration(
+                                                shape: PrettyQrSmoothSymbol(
+                                                color:colorscheme.tertiary,// 🎯 Change color here
+                                                ),
+                                              ),
                                   )
                               ),
                           );

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visiting_card/Home.dart';
+import 'package:visiting_card/Theme/DarkTheme.dart';
+import 'package:visiting_card/Theme/LightTheme.dart';
 import 'package:visiting_card/bloc/db_bloc.dart';
 import 'bloc/info_bloc.dart';
 import 'bloc/theme_bloc.dart';
@@ -23,8 +25,10 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Theme Switcher',
-            theme: ThemeData.light(),
-            darkTheme: ThemeData.dark(),
+            theme: lightthemedata,
+            darkTheme: darkthemedata,
+              
+            
             themeMode: themeState.isDarkMode ? ThemeMode.dark : ThemeMode.light,
             home: Home(),
           );

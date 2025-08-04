@@ -42,6 +42,7 @@ class _UserDetailsState extends State<UserDetails> {
   @override
   Widget build(BuildContext context) {
     String? selectedGender;
+    final colorScheme = Theme.of(context).colorScheme;
 
     final List<String> genderOptions = ['Male', 'Female'];
     return Scaffold(
@@ -67,8 +68,20 @@ class _UserDetailsState extends State<UserDetails> {
               ],
               decoration:InputDecoration(
                 labelText: "Name",
+                labelStyle: TextStyle(color: Colors.black,leadingDistribution: TextLeadingDistribution.even),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
                 prefixIcon: Icon(Icons.account_circle),
+
+
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide(color: colorScheme.tertiary, width: 2.0),
+                ),
+
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide(color: colorScheme.secondary, width: 1.0),
+                ),
 
               )
             ),
@@ -85,8 +98,10 @@ class _UserDetailsState extends State<UserDetails> {
                  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z.\s]')),
               ],
               decoration:InputDecoration(
+                
                 labelText: "Profession",
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(30),borderSide: BorderSide(color: Colors.grey)),
+                
                 prefixIcon: Icon(Icons.account_circle),
 
               )

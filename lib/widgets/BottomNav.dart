@@ -12,18 +12,22 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
+  
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return  Container(
+      height: 90,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primaryContainer,
+        color: colorScheme.primary,
         borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: Colors.grey, width: 1),
+        
+        //border: Border.all(color: Colors.grey, width: 1),
       ),
       child: Padding(
         padding: const EdgeInsets.all(5.0),
         child: Wrap(
-            alignment: WrapAlignment.spaceEvenly,
+            alignment: WrapAlignment.spaceAround,
             runAlignment: WrapAlignment.center,
             crossAxisAlignment: WrapCrossAlignment.center,
             spacing: 8.0,
@@ -39,26 +43,26 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.blueGrey
+                    borderRadius: BorderRadius.circular(25),
+                    color:  Color.fromARGB(255, 131, 214, 255),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical:10),
-                    child: Text('  Home  '),
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0,vertical:15),
+                    child: Text('Home',style:TextStyle(color:Colors.black,fontSize: 20),),
                   )),
               ),
               GestureDetector(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => Scan()));
                 },
-                child: Icon(Icons.qr_code_outlined, size: 30),
+                child:Image.asset("assets/icons/scan.png",color:colorScheme.secondary,scale: 3,),
               ),
               GestureDetector(
                 onTap: () {
                   
                   Navigator.push(context, MaterialPageRoute(builder: (context) => Cardspage()));
                 },
-                child: Icon(Icons.bookmark, size: 30),
+                child: Image.asset("assets/icons/dict.png",color:colorScheme.secondary,scale: 3,),
               ),
               GestureDetector(
                 onTap: () {
@@ -69,7 +73,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                     
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Icon(Icons.edit, size: 30),
+                  child: Image.asset("assets/icons/add.png",color:colorScheme.secondary,scale: 3,),
                 )
               ),
             ],
