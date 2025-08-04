@@ -68,7 +68,7 @@ class _UserDetailsState extends State<UserDetails> {
               ],
               decoration:InputDecoration(
                 labelText: "Name",
-                labelStyle: TextStyle(color: Colors.black,leadingDistribution: TextLeadingDistribution.even),
+                labelStyle: TextStyle(color: Colors.black),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
                 prefixIcon: Icon(Icons.account_circle),
 

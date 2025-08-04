@@ -18,6 +18,6 @@ ThemeData lightthemedata = ThemeData(
                 primary: const Color.fromARGB(255, 242, 242, 242),
                 secondary: const Color.fromARGB(255, 41, 41, 41),
                 onSecondary: const Color.fromARGB(255, 41, 41, 41),
-              
+                tertiary: Colors.black,
               ),
             );
