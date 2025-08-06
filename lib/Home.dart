@@ -7,6 +7,7 @@ import 'package:visiting_card/utils/CreateDetails.dart';
 import 'package:visiting_card/widgets/BottomNav.dart';
 import 'package:qr/qr.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
+import 'package:visiting_card/widgets/StackCover.dart';
 
 
 class Home extends StatefulWidget {
@@ -21,12 +22,15 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final colorscheme = Theme.of(context).colorScheme;
   
-    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    //call the event bloc
+    
+    
     BlocProvider.of<InfoBloc>(context).add(CheckInfoPresentOrNot());
     return Scaffold(
+      
       appBar: AppBar(
-        title: Text('VCARD',style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+        backgroundColor: colorscheme.primary,
+        
+        title: Text('VCARD',style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500, color: colorscheme.onSecondary)),
         actions: [
           BlocBuilder<ThemeBloc, ThemeState>(
             builder: (context, themeState) {
@@ -54,151 +58,71 @@ class _HomeState extends State<Home> {
         ],
         actionsPadding: EdgeInsets.only(right: 8.0),
       ),
-      body: BlocBuilder<InfoBloc, InfoState>(
-        builder: (context, state) {
-          if(state is DBmodified){
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Database modified successfully!"))
-            );
-          }
-          if(state is detailsInSufficent){
-            return Center(
-              child:Text("Details insufficent for QR Code generation"),
-            );
-          }
-          if(state is detailsSufficent){
-            return  FutureBuilder<String>(
-                future: CreateDetails(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  
-                  if (snapshot.hasError) {
-                    return Center(child: Text("Error loading details"));
-                          }
-                          
-                          String userdetails = snapshot.data ?? "";
-                          
-                          final qrCode = QrCode(4, QrErrorCorrectLevel.L)
-                                        ..addData(userdetails);
-
-                          final qrimage = QrImage(qrCode);
-                          return Stack(
-                            children: [
-                              Center(
-                                child: SizedBox(
-                                    width: 300,
-                                    height: 300,
-                                    child: Stack(
-                                      children: [
-                                        // Top-Left
-                                        Positioned(
-                                          top: 0,
-                                          left: 0,
-                                          child: Container(
-                                            width: 24,
-                                            height: 4,
-                                            color: colorscheme.tertiary,
-                                          ),
-                                        ),
-                                        Positioned(
-                                          top: 0,
-                                          left: 0,
-                                          child: Container(
-                                            width: 4,
-                                            height: 24,
-                                            color: colorscheme.tertiary,
-                                          ),
-                                        ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/icons/bg.png"), // your asset path
+            fit: BoxFit.cover,
+          ),
+      ),
+        child: BlocBuilder<InfoBloc, InfoState>(
+          builder: (context, state) {
+            if(state is DBmodified){
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Database modified successfully!"))
+              );
+            }
+            if(state is detailsInSufficent){
+              return Center(
+                child:Text("Details insufficent for QR Code generation"),
+              );
+            }
+            if(state is detailsSufficent){
+              return  FutureBuilder<String>(
+                  future: CreateDetails(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    
+                    if (snapshot.hasError) {
+                      return Center(child: Text("Error loading details"));
+                            }
+                            
+                            String userdetails = snapshot.data ?? "";
+                            
+                            final qrCode = QrCode(4, QrErrorCorrectLevel.L)
+                                          ..addData(userdetails);
+        
+                            final qrimage = QrImage(qrCode);
+                            return Stack(
+                              children: [
+                                StackCover(colorscheme: colorscheme),
+        
+                                Padding(
+                                  padding:  EdgeInsets.all(50.0),
+                                  child: Center(
+                                    child:PrettyQrView(
+                                          qrImage: qrimage,
+                                          decoration:  PrettyQrDecoration(
+                                                      shape: PrettyQrSmoothSymbol(
+                                                      color:colorscheme.tertiary,// 🎯 Change color here
                                 
-                                        // Top-Right
-                                        Positioned(
-                                          top: 0,
-                                          right: 0,
-                                          child: Container(
-                                            width: 24,
-                                            height: 4,
-                                            color: colorscheme.tertiary,
-                                          ),
-                                        ),
-                                        Positioned(
-                                          top: 0,
-                                          right: 0,
-                                          child: Container(
-                                            width: 4,
-                                            height: 24,
-                                            color: colorscheme.tertiary,
-                                          ),
-                                        ),
-                                
-                                        // Bottom-Left
-                                        Positioned(
-                                          bottom: 0,
-                                          left: 0,
-                                          child: Container(
-                                            width: 24,
-                                            height: 4,
-                                            color: colorscheme.tertiary,
-                                          ),
-                                        ),
-                                        Positioned(
-                                          bottom: 0,
-                                          left: 0,
-                                          child: Container(
-                                            width: 4,
-                                            height: 24,
-                                            color: colorscheme.tertiary,
-                                          ),
-                                        ),
-                                
-                                        // Bottom-Right
-                                        Positioned(
-                                          bottom: 0,
-                                          right: 0,
-                                          child: Container(
-                                            width: 24,
-                                            height: 4,
-                                            color: colorscheme.tertiary,
-                                          ),
-                                        ),
-                                        Positioned(
-                                          bottom: 0,
-                                          right: 0,
-                                          child: Container(
-                                            width: 4,
-                                            height: 24,
-                                            color: colorscheme.tertiary,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                              ),
-
-                              Padding(
-                                padding:  EdgeInsets.all(50.0),
-                                child: Center(
-                                  child:PrettyQrView(
-                                        qrImage: qrimage,
-                                        decoration:  PrettyQrDecoration(
-                                                    shape: PrettyQrSmoothSymbol(
-                                                    color:colorscheme.tertiary,// 🎯 Change color here
-                              
+                                                      ),
+                                                      quietZone: PrettyQrQuietZone.zero,
                                                     ),
-                                                    quietZone: PrettyQrQuietZone.zero,
-                                                  ),
-                                      )
-                                  ),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-          }
-          
-          return Container();
-        },
+                                        )
+                                    ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+            }
+            
+            return Container();
+          },
+        ),
       ),
      
 

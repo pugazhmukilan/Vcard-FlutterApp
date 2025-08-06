@@ -29,11 +29,10 @@ class _CardspageState extends State<Cardspage> {
     return Scaffold(
       
       appBar: AppBar(
+        //color:Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         title:Center(child: Text("CARDS")),
-        leading: IconButton(onPressed: (){
-          Navigator.pop(context);
-        },
-        icon: Icon(Icons.close, color: const Color.fromARGB(255, 0, 0, 0), size: 30,)),
+        automaticallyImplyLeading: false,
       ),
 
       body:BlocBuilder<DbBloc, DbState>(
@@ -55,8 +54,14 @@ class _CardspageState extends State<Cardspage> {
             child: Text("No users found"),
           );
         }
+
+        
   
       ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(bottom:30.0,left:20,right:20),
+        child: BottomNavBar(),
+      ), 
        
     );
   }
