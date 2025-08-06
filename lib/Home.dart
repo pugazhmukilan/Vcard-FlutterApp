@@ -58,71 +58,80 @@ class _HomeState extends State<Home> {
         ],
         actionsPadding: EdgeInsets.only(right: 8.0),
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/icons/bg.png"), // your asset path
-            fit: BoxFit.cover,
-          ),
-      ),
-        child: BlocBuilder<InfoBloc, InfoState>(
-          builder: (context, state) {
-            if(state is DBmodified){
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Database modified successfully!"))
-              );
-            }
-            if(state is detailsInSufficent){
-              return Center(
-                child:Text("Details insufficent for QR Code generation"),
-              );
-            }
-            if(state is detailsSufficent){
-              return  FutureBuilder<String>(
-                  future: CreateDetails(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                    
-                    if (snapshot.hasError) {
-                      return Center(child: Text("Error loading details"));
-                            }
-                            
-                            String userdetails = snapshot.data ?? "";
-                            
-                            final qrCode = QrCode(4, QrErrorCorrectLevel.L)
-                                          ..addData(userdetails);
-        
-                            final qrimage = QrImage(qrCode);
-                            return Stack(
-                              children: [
-                                StackCover(colorscheme: colorscheme),
-        
-                                Padding(
-                                  padding:  EdgeInsets.all(50.0),
-                                  child: Center(
-                                    child:PrettyQrView(
-                                          qrImage: qrimage,
-                                          decoration:  PrettyQrDecoration(
-                                                      shape: PrettyQrSmoothSymbol(
-                                                      color:colorscheme.tertiary,// 🎯 Change color here
+      body: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, themeState) {
+          return Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                // Use different images based on theme
+                image: AssetImage(
+                  themeState.isDarkMode 
+                    ? "assets/icons/bg_b.png"  // Dark theme background
+                    : "assets/icons/bg.png"    // Light theme background
+                ),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: BlocBuilder<InfoBloc, InfoState>(
+              builder: (context, state) {
+                if(state is DBmodified){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Database modified successfully!"))
+                  );
+                }
+                if(state is detailsInSufficent){
+                  return Center(
+                    child:Text("Details insufficent for QR Code generation"),
+                  );
+                }
+                if(state is detailsSufficent){
+                  return  FutureBuilder<String>(
+                      future: CreateDetails(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        
+                        if (snapshot.hasError) {
+                          return Center(child: Text("Error loading details"));
+                                }
                                 
-                                                      ),
-                                                      quietZone: PrettyQrQuietZone.zero,
-                                                    ),
-                                        )
-                                    ),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-            }
+                                String userdetails = snapshot.data ?? "";
+                                
+                                final qrCode = QrCode(4, QrErrorCorrectLevel.L)
+                                              ..addData(userdetails);
             
-            return Container();
-          },
-        ),
+                                final qrimage = QrImage(qrCode);
+                                return Stack(
+                                  children: [
+                                    StackCover(colorscheme: colorscheme),
+            
+                                    Padding(
+                                      padding:  EdgeInsets.all(50.0),
+                                      child: Center(
+                                        child:PrettyQrView(
+                                              qrImage: qrimage,
+                                              decoration:  PrettyQrDecoration(
+                                                          shape: PrettyQrSmoothSymbol(
+                                                          color:colorscheme.tertiary,// 🎯 Change color here
+                                    
+                                                          ),
+                                                          quietZone: PrettyQrQuietZone.zero,
+                                                        ),
+                                            )
+                                        ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                }
+                
+                return Container();
+              },
+            ),
+          );
+        },
       ),
      
 
